@@ -62,6 +62,7 @@ RUN echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/build_docker_n
 		erlang-dev \
 		erlang-nox \
 		erlang-observer \
+		erlang-solutions \
 		erlang-src \
 		expat \
 		git-core \
