@@ -78,7 +78,6 @@ RUN echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/build_docker_n
 	&& rm -f /etc/apt/apt.conf.d/build_docker_norecommends \
 	&& rm -f /etc/apt/preferences.d/erlang_version \
 	&& rm -rf /var/lib/apt/lists/* \
-	&& rm -rf ~/.kerl/ \
 	&& rm -rf /tmp/*
 
 USER ${USER}
