@@ -1,0 +1,39 @@
+#!/bin/sh
+set -e
+COMMAND="foreground"
+NETWORK=${NETWORK:-"kazoo"}
+KAZOO_NODE="kazoo_apps@${HOSTNAME}"
+export KZname="-name ${KAZOO_NODE}"
+export KAZOO_CONFIG="${KAZOO_CONFIG:-"${HOME}/config.ini"}"
+export RELX_REPLACE_OS_VARS=true
+export KAZOO_APPS="${KAZOO_APPS:-"sysconf,blackhole,callflow,cdr,conference,crossbar,fax,hangups,media_mgr,milliwatt,omnipresence,pivot,registrar,reorder,stepswitch,teletype,trunkstore,webhooks,ecallmgr"}"
+
+if [ ! -f ${KAZOO_CONFIG} ]; then
+cat << END > ${KAZOO_CONFIG}
+[amqp]
+uri = "${AMQP_URI:-"amqp://${AMQP_USER:-"guest"}:${AMQP_PASSWORD:-"guest"}@${AMQP_HOST:-"rabbitmq.${NETWORK}"}:${AMQP_PORT:-"5672"}${AMQP_VHOST:+"/${AMQP_VHOST}"}"}"
+
+[bigcouch]
+compact_automatically = true
+cookie = ${COUCH_COOKIE:-"change_me"}
+ip = ${COUCH_HOST:-"couchdb.${NETWORK}"}
+port = ${COUCH_PORT:-"5984"}
+admin_port = ${COUCH_ADMIN_PORT:-"5986"}
+${COUCH_USER:+"username = ${COUCH_USER}"}
+${COUCH_PASSWORD:+"password = ${COUCH_PASSWORD}"}
+
+[whistle_apps]
+cookie = change_me
+
+[ecallmgr]
+cookie = change_me
+
+[log]
+syslog = info
+console = notice
+file = error
+
+END
+fi
+
+${HOME}/bin/kazoo $COMMAND "$*"
