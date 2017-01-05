@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.5
 MAINTAINER Sergey Korobkov <skorobkov@dinkor.net>
 
 ARG KAZOO_REPO=https://github.com/2600hz/kazoo.git
